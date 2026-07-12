@@ -1,0 +1,111 @@
+import streamlit as st
+import pandas as pd
+import joblib
+
+# 1. Load the Pre-trained Model
+model = joblib.load('Classification/Adult-Income-Predictor/model.pkl')
+
+# 2. App Headers & UI Layout
+st.title('Income Level Predictor')
+st.write("Predict an adult's income category using machine learning! Classify income as <=50K or >50K based on factors like age, education, etc.")
+
+# 3. User Inputs: Numerical Slider
+age = st.slider(
+    "Age",
+    min_value=0,
+    max_value=100,
+    value=25
+)
+
+# 4. User Inputs: Categorical Dropdowns
+workclass = st.selectbox(
+    "Workclass",
+    ['State-gov', 'Self-emp-not-inc', 'Private', 'Federal-gov', 'Local-gov', 'Self-emp-inc', 'Without-pay', 'Never-worked']
+)
+
+education = st.selectbox(
+    "Education",
+    ['Preschool', '1st-4th', '5th-6th', '7th-8th', '9th', '10th', '11th', '12th', 'HS-grad', 'Some-college', 'Assoc-voc', 'Assoc-acdm', 'Bachelors', 'Masters', 'Prof-school', 'Doctorate']
+)
+
+marital_status = st.selectbox(
+    "Marital Status",
+    ['Never-married', 'Married-civ-spouse', 'Divorced', 'Married-spouse-absent', 'Separated', 'Married-AF-spouse', 'Widowed']
+)
+
+occupation = st.selectbox(
+    "Occupation",
+    ['Adm-clerical', 'Exec-managerial', 'Handlers-cleaners', 'Prof-specialty', 'Other-service', 'Sales', 'Craft-repair', 'Transport-moving', 'Farming-fishing', 'Machine-op-inspct', 'Tech-support', 'Protective-serv', 'Armed-Forces', 'Priv-house-serv']
+)
+
+relationship = st.selectbox(
+    "Relationship",
+    ['Not-in-family', 'Husband', 'Wife', 'Own-child', 'Unmarried', 'Other-relative']
+)
+
+# Note: 'race', 'sex', and 'native_country' are selected in a similar fashion via st.selectbox
+race = st.selectbox("Race", ['White', 'Black', 'Asian-Pac-Islander', 'Amer-Indian-Eskimo', 'Other'])
+sex = st.selectbox("Sex", ['Male', 'Female'])
+
+# 5. User Inputs: Numerical Box Inputs
+capital_gain = st.number_input(
+    "Capital Gain",
+    min_value=0,
+    value=0
+)
+
+capital_loss = st.number_input(
+    "Capital Loss",
+    min_value=0,
+    value=0
+)
+
+hours_per_week = st.number_input(
+    "Working Hours Per Week",
+    min_value=0,
+    max_value=100,
+    value=40
+)
+
+native_country = st.selectbox("Native Country", ['United-States', 'Cuba', 'Jamaica', 'India', 'Mexico', 'South', 'Puerto-Rico', 'Honduras', 'England', 'Canada', 'Germany', 'Iran', 'Philippines', 'Italy', 'Poland', 'Columbia', 'Cambodia', 'Thailand', 'Ecuador', 'Laos', 'Taiwan', 'Haiti', 'Portugal', 'Dominican-Republic', 'El-Salvador', 'France', 'Guatemala', 'China', 'Japan', 'Yugoslavia', 'Peru', 'Outlying-US(Guam-USVI-etc)', 'Scotland', 'Trinadad&Tobago', 'Greece', 'Nicaragua', 'Vietnam', 'Hong', 'Ireland', 'Hungary', 'Holand-Netherlands'])
+
+# 6. Structuring Inputs into a Pandas DataFrame
+input_data = pd.DataFrame({
+    "age": [age],
+    "workclass": [workclass],
+    "education": [education],
+    "marital_status": [marital_status],
+    "occupation": [occupation],
+    "relationship": [relationship],
+    "race": [race],
+    "sex": [sex],
+    "capital_gain": [capital_gain],
+    "capital_loss": [capital_loss],
+    "hours_per_week": [hours_per_week],
+    "native_country": [native_country]
+})
+
+# 7. Model Inference & Trigger Logic
+if st.button("Predict"):
+    
+    # Predict Class (0 or 1)
+    prediction = model.predict(input_data)[0]
+    
+    # Predict Probability scores for both classes
+    probability = model.predict_proba(input_data)[0]
+    
+    st.subheader("Prediction Result")
+    
+    # Check if prediction is greater than 50k (1) or less/equal (0)
+    if prediction == 1:
+        st.success("The income is predicted to be greater than 50,000.")
+        st.write(
+            "**Probability of Income >50K:** ",
+            f"{probability[1]:.2%}"
+        )
+    else:
+        st.error("The income is predicted to be less than or equal to 50,000.")
+        st.write(
+            "**Probability of Income <=50K:** ",
+            f"{probability[0]:.2%}"
+        )
