@@ -1,18 +1,12 @@
 
-# packages in environment at C:\Users\user\miniconda3\envs\ml_env:
-#
-# Name                       Version          Build               Channel
 
-joblib                       1.5.3            pypi_0              pypi
+joblib                   
 
 
-numpy                        2.5.1            pypi_0              pypi
+numpy                       
 
-pandas                       3.0.3            pypi_0              pypi
+pandas                            
 
-python                       
+scikit-learn                 
 
-scikit-learn                 1.9.0            pypi_0              pypi
-scipy                        1.18.0           pypi_0              pypi
-
-streamlit                    1.59.1           pypi_0              pypi
+streamlit                    
