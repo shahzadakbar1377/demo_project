@@ -10,7 +10,7 @@ numpy                        2.5.1            pypi_0              pypi
 
 pandas                       3.0.3            pypi_0              pypi
 
-python                       3.14.6           hb107ab2_101_cp314
+python                       
 
 scikit-learn                 1.9.0            pypi_0              pypi
 scipy                        1.18.0           pypi_0              pypi
