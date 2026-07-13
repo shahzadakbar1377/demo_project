@@ -1,4 +1,4 @@
-env) C:\Users\user>conda list
+
 # packages in environment at C:\Users\user\miniconda3\envs\ml_env:
 #
 # Name                       Version          Build               Channel
